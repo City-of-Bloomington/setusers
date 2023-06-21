@@ -1,0 +1,371 @@
+package users.web;
+import java.util.*;
+import java.io.*;
+import javax.servlet.*;
+import javax.servlet.http.*;
+import javax.servlet.annotation.WebServlet;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import users.model.*;
+import users.list.*;
+
+@WebServlet(urlPatterns = {"/WaiverUser"})
+public class WaiverUserServ extends TopServlet{
+
+    static Logger logger = LogManager.getLogger(WaiverUserServ.class);
+
+    public void doPost(HttpServletRequest req, 
+		       HttpServletResponse res) 
+	throws ServletException, IOException{
+	
+	res.setContentType("text/html");
+	Enumeration values = req.getParameterNames();
+	PrintWriter out = res.getWriter();
+		
+	String name = "";
+	String value = "";
+	// String user = "";
+	String empid = "";
+	String act = ""; 
+	String appsName = "";
+	String id = "", fname="",dept="HAND", role="", inspector="",
+	    inactive="";
+	List<WaiverUser> users = null;
+	String mysqlUser="";
+	String message = "";
+	boolean success = true;
+	HttpSession session = req.getSession();
+	User adminUser = null;
+	if(session != null){
+	    adminUser = (User)session.getAttribute("user");
+	}
+	if(adminUser == null){
+	    res.sendRedirect(url+"Login");
+	    return;
+	}
+	WaiverUser user = new WaiverUser();
+	while (values.hasMoreElements()){
+
+	    name = ((String)values.nextElement()).trim();
+	    value = (req.getParameter(name)).trim();
+
+	    if (name.equals("act")) 
+		act = value;  // Add, Remove
+	    else if (name.equals("empid"))  
+		empid = value.toLowerCase();
+	    else if (name.equals("id"))  
+		id = value;
+	    else if (name.equals("fname"))  
+		fname = value;
+	    else if (name.equals("inspector"))  
+		inspector = value;
+	    else if (name.equals("role"))  
+		role = value;
+	    else if (name.equals("dept"))  
+		dept = value;
+	    else if (name.equals("inactive"))  
+		inactive = value;						
+	}
+	if (act.equals("Add")){
+	    /**
+	    String qq = "", qq2="";
+	    qq = "insert into " + tableName+" values(0,?,?,?,?,?,null)";
+	    qq2 = "select LAST_INSERT_ID() ";
+	    if(debug)
+		logger.debug(qq);
+	    try{
+		con = PickApp.databaseConnect(mySqlConStr+appStr, mysqlPass);
+		stmt = con.prepareStatement(qq);
+		int jj = 1;
+		stmt.setString(1, empid);
+		if(!role.equals("")){
+		    stmt.setString(2, role);
+		}
+		else
+		    stmt.setNull(2, Types.VARCHAR);
+		if(dept.equals("")) dept = "HAND";
+		stmt.setString(3, dept);
+		stmt.setString(4, fname);
+		if(!inspector.equals("")){
+		    stmt.setString(5, "y");
+		}
+		else
+		    stmt.setNull(5, Types.CHAR);
+		stmt.executeUpdate();
+		//
+		stmt2 = con.prepareStatement(qq2);
+		rs = stmt2.executeQuery();
+		if(rs.next()){
+		    id = rs.getString(1);
+		}									
+		message = "User added successfully";
+	    }catch(Exception e){
+		message = " Error adding the user "+e;
+		logger.error(message);
+	    }
+	    finally{
+		PickApp.databaseDisconnect(con, rs, stmt, stmt2);
+	    }
+	    */
+	}
+	else if(act.equals("Remove")){
+	    /**
+	    String qq = "";
+	    qq = "delete from "+tableName + " where "+varName+"= ? ";
+						
+	    if(debug)
+		logger.debug(qq);
+	    try {
+		con = PickApp.databaseConnect(mySqlConStr+appStr, mysqlPass);
+		stmt = con.prepareStatement(qq);
+		stmt.setString(1, id);
+		stmt.executeUpdate();
+		message = "User deleted successfully";
+		empid = "";dept="";role="";fname="";
+	    }
+	    catch(Exception e){
+		message = " Error deleting the user "+e;
+		logger.error(message);
+	    }
+	    finally{
+		PickApp.databaseDisconnect(con, stmt, rs);
+	    }
+	    */
+	}
+	else if(act.equals("Update")){
+	    //
+	    /**
+	    String qq = "update "+tableName+" set empid=?,role=?,dept=?,fullname=?,inspector=?,inactive=? where id=? ";
+	    String qq2 = "";
+	    if(debug)
+		logger.debug(qq);
+	    try{
+		con = PickApp.databaseConnect(mySqlConStr+appStr, mysqlPass);
+		stmt = con.prepareStatement(qq);
+		stmt.setString(1, empid);
+		if(role.equals(""))
+		    stmt.setNull(2, Types.VARCHAR);
+		else
+		    stmt.setString(2, role);
+		if(dept.equals(""))
+		    stmt.setNull(3, Types.VARCHAR);
+		else
+		    stmt.setString(3, dept);
+		if(fname.equals(""))
+		    stmt.setNull(4, Types.VARCHAR);
+		else
+		    stmt.setString(4, fname);
+		if(!inspector.equals("")){
+		    stmt.setString(5, "y");
+		}
+		else
+		    stmt.setNull(5, Types.CHAR);
+		if(!inactive.equals("")){
+		    stmt.setString(6, "y");
+		}
+		else
+		    stmt.setNull(6, Types.CHAR);
+		stmt.setString(7, id);
+		stmt.executeUpdate();
+		message = "User updated successfully";
+	    }catch(Exception e){
+		message = " Error updating the user "+e;
+		logger.error(message);
+	    }
+	    finally{
+		PickApp.databaseDisconnect(con, stmt, rs);
+	    }
+	    */
+	}
+	else if(!id.equals("")){
+	    /**
+	    String qq = " select * from "+tableName+" where id=?";
+						
+	    role="";inspector="";fname="";empid="";dept="";inactive="";
+	    if(debug)
+		logger.debug(qq);
+	    try {
+		con = PickApp.databaseConnect(mySqlConStr+appStr, mysqlPass);
+		if(con == null){
+		    logger.error("could not connect to database ");
+		    message = "Error coold not connect to db ";
+		}
+		else{
+		    stmt = con.prepareStatement(qq);
+		    stmt.setString(1, id);
+		    rs = stmt.executeQuery();
+		    if(rs.next()){
+			empid = rs.getString(2);
+			role = rs.getString(3);
+			if(role == null) role = "";
+			dept = rs.getString(4);
+			if(dept == null) dept = "";
+			fname = rs.getString(5);
+			if(fname == null) fname = "";
+			inspector = rs.getString(6);
+			if(inspector == null) inspector = "";
+			inactive = rs.getString(7);
+			if(inactive == null) inactive = "";					
+		    }
+		}
+	    }
+	    catch(Exception e){
+		logger.error(e);
+	    }
+	    finally{
+		PickApp.databaseDisconnect(con, stmt, rs);
+	    }
+	    */
+	}
+	else{
+	    empid="";fname="";dept="";inspector=""; role="";
+	}
+	//
+	// list of users for this application and dept if specified
+	//
+	/**
+	users = new UserList(debug,
+			     tableName,
+			     varName,
+			     varName2,
+			     varName3,
+			     mySqlConStr+appStr,
+			     mysqlPass);
+	if(users.hasErrors()){
+	    message += users.getErrors();
+	}
+	*/
+	String role1="",role2="",role3="";
+	if(role.equals(""))
+	    role1 = "checked=\"checked\"";
+	else if(role.equals("Edit"))
+	    role2 = "checked=\"checked\"";
+	else if(role.startsWith("Edit:Del"))
+	    role3 = "checked=\"checked\"";
+	String dept1="",dept2="",dept3="",dept4="", dept5="",dept6="";
+	if(dept.equals("HAND"))
+	    dept1 = "checked=\"checked\"";
+	else if(dept.equals("ITS"))
+	    dept2 = "checked=\"checked\"";
+	else if(dept.equals("Utilities"))
+	    dept3 = "checked=\"checked\"";
+	else if(dept.equals("Police"))
+	    dept4 = "checked=\"checked\"";
+	else if(dept.equals("Fire"))
+	    dept5 = "checked=\"checked\"";				
+	else
+	    dept6 = "checked=\"checked\"";
+	out.println("<HTML><HEAD><TITLE>Add/Delete Users </TITLE>");
+	out.println("<script language=Javascript>                ");
+	out.println(" function validateAdd(){     ");
+	out.println(" if(document.myForm.empid.value.length == 0){ ");
+	out.println("	alert(\"User name not entered \");  ");  
+	out.println("   document.myForm.empid.focus();    ");
+	out.println("   return false;}                      ");
+	out.println("   return true;         ");
+	out.println("  }  ");
+	out.println(" function validateUpdate(){     ");
+	out.println(" if(document.myForm.fname.value.length == 0){ ");
+	out.println("	alert(\"User Last name not entered \");  ");  
+	out.println("   document.myForm.fname.focus();    ");
+	out.println("   return false;}                      ");
+	out.println("   return true;         ");
+	out.println("  }  ");
+	out.println(" function validateDelete(){       ");
+	out.println(" if(!document.myForm.id.selectedIndex > 0){ ");
+	out.println("	alert(\"User not selected \"); ");  
+	out.println("   return false;}                 ");
+	out.println("  }                               ");
+	out.println(" </script>		               ");
+	out.println("</HEAD><BODY>");
+	out.println("<center>");
+	out.println("<font size=+2> Grant/Deny Access </font><br>");
+	out.println("<font size=+1 color=green> "+
+		    "Citation Application </font><br>"); 
+	out.println("<br />");
+	if(!message.equals("")){
+	    out.println(message);
+	    out.println("<br />");
+	}
+	out.println("<form name=myForm>");
+	out.println("<table border><tr><td>");
+	out.println("<table><tr>");
+	out.println("<td><b>Current users</b>:");
+	out.println("</td><td>");
+	out.println("<select name=\"id\" size=\"3\" "+
+		    "onchange=\"myForm.submit()\">");
+	out.println("<option>\n"); // empty option
+	if(users != null && users.size() > 0){
+	    for(WaiverUser one: users){
+		String u_id = one.getId(); 
+		if(u_id.equals(id)){
+		    out.println("<option selected=\"selected\" value=\""+u_id+"\">"+user.getFullName()+"</option>\n");
+		}
+		else{
+		    out.println("<option value=\""+u_id+"\">"+user.getFullName()+"</option>\n");
+		}
+	    }
+	}
+	out.println("</select></td></tr>");
+
+	out.println("<tr><td align=\"right\"><b>Username</b>:</td><td>");
+	out.println("<input name=\"empid\" size=\"30\" value=\""+empid+"\" /><br />");
+
+	out.println("</td></tr>");
+	out.println("<tr><td align=\"right\"><b>Full Name</b>:</td><td>");
+	out.println("<input name=\"fname\" size=\"30\" value=\""+fname+"\" />  ");
+
+	out.println("<input type=\"checkbox\" name=\"inspector\" value=\"y\" "+inspector+" /> Inspector ");
+	out.println("</td></tr>");
+	out.println("<tr><td align=right><b>Role</b>"+
+		    ":</td><td> ");
+	out.println("<input type=\"radio\" name=\"role\" value=\"\" "+
+		    role1+" />View only* ");
+	out.println("<input type=\"radio\" name=\"role\" value='Edit' "+
+		    role2+" />Edit (View/Update) ");
+	out.println("<input type=\"radio\" name=\"role\" value=\"Edit:Delete\" "+
+		    role3+" />All** (View/Update/Delete)</td></tr>");
+	out.println("<tr><td align=right><b>Department</b></td><td>");
+	out.println("<input type=\"radio\" name=\"dept\" value=\"HAND\" "+
+		    dept1+" />HAND");
+	out.println("<input type=\"radio\" name=\"dept\" value=\"ITS\" "+
+		    dept2+"/>ITS");		
+	out.println("<input type=\"radio\" name=\"dept\" value=\"Utilities\" "+
+		    dept3+"/>Utilities");
+	out.println("<input type=\"radio\" name=\"dept\" value=\"Police\" "+
+		    dept4+"/>Police");
+	out.println("<input type=\"radio\" name=\"dept\" value=\"Fire\" "+
+		    dept5+"/>Fire");
+	out.println("<input type=\"radio\" name=\"dept\" value=\"\" "+
+		    dept6+"/>Other");
+	out.println("</td></tr>");
+	out.println("<tr><td colspan=2 align=right><table><tr>");
+	out.println("<tr><td>");
+	out.println("<input type=\"submit\" value=\"Add\" name=\"act\" "+
+		    "onclick=\"return validateAdd()\" />&nbsp;&nbsp;"+
+		    "&nbsp;&nbsp;&nbsp;");
+	out.println("<input type=\"submit\" value=\"Update\" name=\"act\" "+
+		    "onclick=\"return validateUpdate()\" />&nbsp;&nbsp;"+
+		    "&nbsp;&nbsp;&nbsp;");
+	out.println("<input type=\"submit\" value=\"Remove\" name=\"act\" "+
+		    "onclick=\"return validateDelete()\" />");
+	out.println("</td></tr></table>");
+	out.println("</td></tr></table>");
+	out.println("</form>");
+	out.println("</td></tr>");
+	out.println("</table><br>");
+	out.println("<font size=\"-1\">* For non HAND employees</font><br />");
+	out.println("<font size=\"-1\">** Certain HAND employees (check with HAND)</font><br />");
+	out.println("<a href=\""+url+"PickApp\">Pick Another Application</a><br>");
+	out.println("<a href=\""+url+"Logout\">Log out</a><br>");
+	out.println("</body></html>");
+	out.close();
+    }
+    //  
+    public void doGet(HttpServletRequest req, 
+		      HttpServletResponse res) 
+	throws ServletException, IOException{
+	doPost(req, res);
+    }
+    
+}
