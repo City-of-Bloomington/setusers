@@ -377,6 +377,47 @@ public class TopUserList extends TopUser{
 	}
 	return msg;
     }
+    public String findLegacytimeUsers(){
+	String msg = "";
+	Connection con = null;
+	PreparedStatement stmt = null;
+	ResultSet rs = null;			
+	String qq = " select * from users";
+	logger.debug(qq);
+	try {
+	    con = Helper.databaseConnect(getMysqlConStr(), getAppPass());
+	    if(con == null){
+		msg = "Error coold not connect to db ";		
+		logger.error(msg);
+	    }
+	    else{
+		stmt = con.prepareStatement(qq);
+		rs = stmt.executeQuery();
+		while(rs.next()){
+		    TopUser one =
+			new LegacytimeUser(
+				     rs.getString(1),
+				     rs.getString(2),
+				     rs.getString(3),
+				     rs.getString(4),
+				     rs.getString(5),
+				     rs.getString(6));
+		    if(users == null)
+			users = new ArrayList<>();
+		    if(!users.contains(one))
+			users.add(one);
+		}
+	    }
+	}
+	catch(Exception e){
+	    logger.error(e);
+	    msg += e+";"+qq;
+	}
+	finally{
+	    Helper.databaseDisconnect(con, stmt, rs);
+	}
+	return msg;
+    }    
     public String findWaiversUsers(){
 	String msg = "";
 	Connection con = null;

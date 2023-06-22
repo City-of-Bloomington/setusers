@@ -8,14 +8,14 @@ import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 import users.utils.*;
 
-public class ProloanUser extends TopUser implements Serializable{
+public class LegacytimeUser extends TopUser implements Serializable{
 
-    static Logger logger = LogManager.getLogger(ProloanUser.class);
+    static Logger logger = LogManager.getLogger(LegacytimeUser.class);
 
-    public ProloanUser(){
+    public LegacytimeUser(){
 
     }
-    public ProloanUser(
+    public LegacytimeUser(
 			  String str,
 			  String str2,
 			  String str3,
@@ -34,14 +34,15 @@ public class ProloanUser extends TopUser implements Serializable{
 		 ){
 	setId(str);
 	setUsername(str2);
-	setFullName(str3);		
-	setRole(str4);	
-	setProject_manager(str5);
-	setActive(str6);
+	setFullName(str3);	
+	setRole(str4);
+	setDept(str5);	
+	setInactive(str6);
 
     }
     public String toString(){
 		
+	if(!fullName.equals("")) return fullName;
 	return username;
     }
     @Override
@@ -60,22 +61,22 @@ public class ProloanUser extends TopUser implements Serializable{
             return false;
         if (getClass() != obj.getClass())
             return false;
-	return ((ProloanUser)obj).getUsername().equals(username);
+	return ((LegacytimeUser)obj).getUsername().equals(username);
 
     }
 
     public String doSave(){
 	String msg="";
 	Connection con = null;
-	PreparedStatement stmt = null, stmt2=null, stmt3=null;
+	PreparedStatement stmt = null, stmt2=null;
 	ResultSet rs = null;	
 	String qq = "insert into users values(0,?,?,?,?,?)";
-	String qq2 = "select LAST_INSERT_ID()";	
+	String qq2 = "select LAST_INSERT_ID() ";
 	logger.debug(qq);
 	try{
 	    con = Helper.databaseConnect(getMysqlConStr(), getAppPass());
 	    stmt = con.prepareStatement(qq);
-	    stmt.setString(1, username);
+	    stmt.setString(1, userid);
 	    if(fullName.equals(""))
 		stmt.setNull(2,Types.VARCHAR);
 	    else
@@ -84,28 +85,26 @@ public class ProloanUser extends TopUser implements Serializable{
 		stmt.setNull(3,Types.VARCHAR);
 	    else
 		stmt.setString(3, role);
-	    
-	    if(project_manager.equals(""))
-		stmt.setNull(4,Types.CHAR);
+	    if(dept.equals(""))
+		stmt.setNull(4,Types.VARCHAR);
 	    else
-		stmt.setString(4, "y");
-	    if(active.equals(""))
+		stmt.setString(4, dept);	    	    
+	    if(inactive.equals(""))
 		stmt.setNull(5,Types.CHAR);
 	    else
 		stmt.setString(5, "y");
-	    
 	    stmt.executeUpdate();
 	    stmt2 = con.prepareStatement(qq2);
 	    rs = stmt2.executeQuery();
 	    if(rs.next()){
 		id = rs.getString(1);
-	    }
+	    }	
 	}catch(Exception e){
 	    msg = " Error adding the user "+e;
 	    logger.error(msg);
 	}
 	finally{
-	    Helper.databaseDisconnect(con, rs, stmt, stmt2, stmt3);
+	    Helper.databaseDisconnect(con, rs, stmt, stmt2);
 	}
 	return msg;
     }
@@ -138,7 +137,8 @@ public class ProloanUser extends TopUser implements Serializable{
 	PreparedStatement stmt = null;
 	ResultSet rs = null;
 	
-	String qq = "update users set username=?,fullName=?,role=?,project_manager=?,active=? where id =?";
+	String qq = "update users set username=?,fullname=?,role=?,dept=?,inactive=? ";
+	qq += " where id =?";
 	try{
 	    con = Helper.databaseConnect(getMysqlConStr(), getAppPass());
 	    logger.debug(qq);
@@ -152,12 +152,11 @@ public class ProloanUser extends TopUser implements Serializable{
 		stmt.setNull(3,Types.VARCHAR);
 	    else
 		stmt.setString(3, role);
-	    
-	    if(project_manager.equals(""))
-		stmt.setNull(4,Types.CHAR);
+	    if(dept.equals(""))
+		stmt.setNull(4,Types.VARCHAR);
 	    else
-		stmt.setString(4, "y");
-	    if(active.equals(""))
+		stmt.setString(4, dept);	    	    
+	    if(inactive.equals(""))
 		stmt.setNull(5,Types.CHAR);
 	    else
 		stmt.setString(5, "y");

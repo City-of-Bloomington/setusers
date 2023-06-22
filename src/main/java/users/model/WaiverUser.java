@@ -44,7 +44,7 @@ public class WaiverUser extends TopUser implements Serializable{
   public String toString(){
 		
 	if(!fullName.equals("")) return fullName;
-	return empid;
+	return username;
     }
     @Override
     public int hashCode(){

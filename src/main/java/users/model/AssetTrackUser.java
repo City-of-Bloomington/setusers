@@ -11,7 +11,6 @@ import users.utils.*;
 public class AssetTrackUser extends TopUser implements Serializable{
 
     static Logger logger = LogManager.getLogger(AssetTrackUser.class);
-    String conUrl="", appStr="", appUser="", appPass="";
 
     public AssetTrackUser(){
 

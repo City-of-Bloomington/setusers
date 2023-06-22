@@ -10,13 +10,13 @@ import org.apache.logging.log4j.LogManager;
 import users.model.*;
 import users.list.*;
 
-@WebServlet(urlPatterns = {"/MarketbucksUser"})
-public class MarketbucksUserServ extends TopServlet{
+@WebServlet(urlPatterns = {"/PhonesUser"})
+public class PhonesUserServ extends TopServlet{
 
-    static Logger logger = LogManager.getLogger(MarketbucksUserServ.class);
+    static Logger logger = LogManager.getLogger(PhonesUserServ.class);
     static String appDbInfo = null;
-    static String[] roleNames = {"Edit","Edit & Delte","Admin"};
-    static String[] roles = {"Edit","Edit:Delete","Admin:Edit:Delete"};
+    static String[] roleNames = {"View","Edit","Admin"};
+    static String[] roles = {"View","Edit","Admin"};
     public void doPost(HttpServletRequest req, 
 		       HttpServletResponse res) 
 	throws ServletException, IOException{
@@ -24,14 +24,14 @@ public class MarketbucksUserServ extends TopServlet{
 	res.setContentType("text/html");
 	Enumeration values = req.getParameterNames();
 	PrintWriter out = res.getWriter();
-	String name = "", userid="";
+	String name = "";
 	String value = "";
 	String action = ""; 
-	String id="", username,newuser = "";
+	String id="", username;
 	List<TopUser> users = null;
 	String message = "";
-	appDbInfo = getAppDbInfo("marketbucks");
-	MarketbucksUser user = new MarketbucksUser();
+	appDbInfo = getAppDbInfo("phones");
+	PhonesUser user = new PhonesUser();
 	user.setDbParams(appDbInfo);
 	while (values.hasMoreElements()){
 
@@ -44,12 +44,17 @@ public class MarketbucksUserServ extends TopServlet{
 		user.setId(value);
 		id = value;
 	    }
-	    else if (name.equals("userid")){
-		user.setUserid(value);
-		userid = value;
+	    else if (name.equals("username")){
+		user.setUsername(value);
 	    }
-	    else if (name.equals("fullName"))  {
-		user.setFullName(value);
+	    else if (name.equals("fname"))  {
+		user.setFname(value);
+	    }
+	    else if (name.equals("lname"))  {
+		user.setLname(value);
+	    }	    
+	    else if (name.equals("mail_notification")){
+		user.setMail_notification(value);
 	    }
 	    else if (name.equals("role")){
 		user.setRole(value);
@@ -70,7 +75,7 @@ public class MarketbucksUserServ extends TopServlet{
 	//
 	// Set defaults
 	//
-	if(!userid.isEmpty() && action.equals("Add")){
+	if(action.equals("Add")){
 	    String back = user.doSave();
 	    if(!back.isEmpty()){
 		message += back;
@@ -95,7 +100,7 @@ public class MarketbucksUserServ extends TopServlet{
 		message += back;
 	    }
 	    else{
-		user = new MarketbucksUser();
+		user = new PhonesUser();
 		id = "";
 		message += "Delete Successfully";
 	    }
@@ -131,7 +136,7 @@ public class MarketbucksUserServ extends TopServlet{
 	out.println("<center>");
 	out.println("<font size=+2>Grant/Deny Access </font><br>");
 	out.println("<font size=+1 color=green> "+
-		    "Marketbucks Application </font><br>"); 
+		    "Phones Application </font><br>"); 
 	out.println("<br />");
 	if(!message.equals("")){
 	    out.println(message);
@@ -147,7 +152,7 @@ public class MarketbucksUserServ extends TopServlet{
 		    "onchange=\"myForm.submit()\">");
 	TopUserList tl = new TopUserList();
 	tl.setDbParams(appDbInfo);
-	String back = tl.findMarketbucksUsers();
+	String back = tl.findPhonesUsers();
 	if(back.isEmpty()){
 	    users = tl.getUsers();
 	}
@@ -161,11 +166,13 @@ public class MarketbucksUserServ extends TopServlet{
 	    }
 	} 
 	out.println("</select></td></tr>");
-	out.println("<tr><td align=right><b>Userid</b>:</td><td>");
-	out.println("<input name=\"userid\" size=\"30\" value=\""+user.getUserid()+"\" ></input>");
+	out.println("<tr><td align=right><b>Username</b>:</td><td>");
+	out.println("<input name=\"username\" size=\"30\" value=\""+user.getUsername()+"\" ></input>");
 	out.println("</td></tr>");
-	out.println("<tr><td align=right><b>Full Name</b>:</td><td>");
-	out.println("<input name=fullName size=30 value=\""+user.getFullName()+"\"></input><br />");
+	out.println("<tr><td align=right><b>First Name</b>:</td><td>");
+	out.println("<input name=fname size=30 value=\""+user.getFname()+"\"></input><br />");
+	out.println("<tr><td align=right><b>last Name</b>:</td><td>");
+	out.println("<input name=lname size=30 value=\""+user.getLname()+"\"></input><br />");	
 	out.println("</td></tr>");
 	out.println("<tr><td align=right><b>Role:</b>:</td><td>");
 	for(int jj=0; jj< roles.length;jj++){
@@ -177,8 +184,16 @@ public class MarketbucksUserServ extends TopServlet{
 	    out.println("<input type=\"radio\" name=\"role\" "+checked+" value=\""+roles[jj]+"\">"+roleNames[jj]);			    
 	}
 	out.println("</td></tr>");
-	out.println("<tr><td align=right><b>Inactive?</b>:</td><td>");
+	out.println("<tr><td align=right><b>Email Notification:</b>:</td><td>");
 	String checked = "";
+	if(!user.getMail_notification().isEmpty()){
+	    checked = "checked=\"checked\"";
+		
+	}
+	out.println("<input type=\"checkbox\" name=\"mail_notification\" value=\"y\" "+checked+" /> Yes ");
+	out.println("</td></tr>");
+	out.println("<tr><td align=right><b>Inactive:</b>:</td><td>");
+	checked = "";
 	if(!user.getInactive().isEmpty()){
 	    checked = "checked=\"checked\"";
 		
@@ -199,7 +214,7 @@ public class MarketbucksUserServ extends TopServlet{
 			"&nbsp;&nbsp;&nbsp;</td><td>");		
 	    out.println("<input type=\"submit\" value=\"Delete\" name=\"action\" "+
 			"onclick=\"return validateDelete()\" /> ");
-	    out.println("<a href=\""+url+"MarketbucksUser\">New User</a>");
+	    out.println("<a href=\""+url+"PhonesUser\">New User</a>");
 	}
 	out.println("</td></tr></table>");
 	out.println("</td></tr></table>");

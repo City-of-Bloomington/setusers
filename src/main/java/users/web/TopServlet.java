@@ -31,7 +31,12 @@ public class TopServlet extends HttpServlet {
 	"sponsors",
 	"proloan",
 	"promt",
-	"waivers"};
+	"waivers",
+	"phones",
+	
+	"legacytime",
+	"setusers"
+    };
     HashMap<String, String> appsDbInfo = new HashMap<>();
     public void init(ServletConfig conf){
 	try{
@@ -73,6 +78,7 @@ public class TopServlet extends HttpServlet {
 	if(appName != null && str != null){
 	    try{
 		appsDbInfo.put(appName, str);
+		// System.err.println(" adding "+appName+" "+str);
 	    }catch(Exception ex){
 		logger.error(appName+":"+str+":"+ex);
 	    }
@@ -80,6 +86,7 @@ public class TopServlet extends HttpServlet {
 
     }
     public String getAppDbInfo(String appName){
+	//System.err.println(" getting "+appName);
 	if(appsDbInfo != null && appsDbInfo.containsKey(appName)){
 	    String appInfo = appsDbInfo.get(appName);
 	    return appInfo;

@@ -11,7 +11,6 @@ import users.utils.*;
 public class LicenseproUser extends TopUser implements Serializable{
 
     static Logger logger = LogManager.getLogger(LicenseproUser.class);
-    String conUrl="", appStr="", appUser="", appPass="";
 
     public LicenseproUser(){
 

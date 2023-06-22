@@ -11,7 +11,6 @@ import users.utils.*;
 public class PhonesUser extends TopUser implements Serializable{
 
     static Logger logger = LogManager.getLogger(PhonesUser.class);
-    String conUrl="", appStr="", appUser="", appPass="";
 
     public PhonesUser(){
 
@@ -42,7 +41,7 @@ public class PhonesUser extends TopUser implements Serializable{
 	setLname(str4);	
 	setRole(str5);	
 	setMail_notification(str6);
-	setActive(str7);
+	setInactive(str7);
     }
     public String toString(){
 		
@@ -73,7 +72,7 @@ public class PhonesUser extends TopUser implements Serializable{
 	Connection con = null;
 	PreparedStatement stmt = null, stmt2=null;
 	ResultSet rs = null;	
-	String qq = "insert into users values(0,?,?,?,?,?,?)";
+	String qq = "insert into users values(0,?,?,?,9,?,?,?)";
 	String qq2 = "select LAST_INSERT_ID()";
 	logger.debug(qq);
 	try{
@@ -97,7 +96,7 @@ public class PhonesUser extends TopUser implements Serializable{
 		stmt.setNull(5,Types.CHAR);
 	    else
 		stmt.setString(5, "y");
-	    if(active.equals(""))
+	    if(inactive.equals(""))
 		stmt.setNull(6,Types.CHAR);
 	    else
 		stmt.setString(6, "y");	    
@@ -146,7 +145,7 @@ public class PhonesUser extends TopUser implements Serializable{
 	PreparedStatement stmt = null;
 	ResultSet rs = null;
 	
-	String qq = "update users set username=?,firstname=?,lastname=?,role?,mail_notification=?, active=? ";
+	String qq = "update users set username=?,firstname=?,lastname=?,role=?,mail_notification=?, inactive=? ";
 	qq += " where id =?";
 	try{
 	    con = Helper.databaseConnect(getMysqlConStr(), getAppPass());
@@ -170,7 +169,7 @@ public class PhonesUser extends TopUser implements Serializable{
 		stmt.setNull(5,Types.CHAR);
 	    else
 		stmt.setString(5, "y");
-	    if(active.equals(""))
+	    if(inactive.equals(""))
 		stmt.setNull(6,Types.CHAR);
 	    else
 		stmt.setString(6, "y");	 
@@ -202,9 +201,10 @@ public class PhonesUser extends TopUser implements Serializable{
 			rs.getString(2),
 			rs.getString(3),
 			rs.getString(4),
-			rs.getString(5),
+			// dept id 9 is ignored
 			rs.getString(6),
-			rs.getString(7));
+			rs.getString(7),
+			rs.getString(8));
 	    }
 	}
 	catch(Exception e){

@@ -10,13 +10,13 @@ import org.apache.logging.log4j.LogManager;
 import users.model.*;
 import users.list.*;
 
-@WebServlet(urlPatterns = {"/MarketbucksUser"})
-public class MarketbucksUserServ extends TopServlet{
+@WebServlet(urlPatterns = {"/LegacytimeUser"})
+public class LegacytimeUserServ extends TopServlet{
 
-    static Logger logger = LogManager.getLogger(MarketbucksUserServ.class);
+    static Logger logger = LogManager.getLogger(LegacytimeUserServ.class);
     static String appDbInfo = null;
-    static String[] roleNames = {"Edit","Edit & Delte","Admin"};
-    static String[] roles = {"Edit","Edit:Delete","Admin:Edit:Delete"};
+    static String[] roleNames = {"Edit","Admin"};
+    static String[] roles = {"Edit","Edit:Admin"};
     public void doPost(HttpServletRequest req, 
 		       HttpServletResponse res) 
 	throws ServletException, IOException{
@@ -27,11 +27,11 @@ public class MarketbucksUserServ extends TopServlet{
 	String name = "", userid="";
 	String value = "";
 	String action = ""; 
-	String id="", username,newuser = "";
+	String id="", username= "";
 	List<TopUser> users = null;
 	String message = "";
-	appDbInfo = getAppDbInfo("marketbucks");
-	MarketbucksUser user = new MarketbucksUser();
+	appDbInfo = getAppDbInfo("legacytime");
+	LegacytimeUser user = new LegacytimeUser();
 	user.setDbParams(appDbInfo);
 	while (values.hasMoreElements()){
 
@@ -44,16 +44,19 @@ public class MarketbucksUserServ extends TopServlet{
 		user.setId(value);
 		id = value;
 	    }
-	    else if (name.equals("userid")){
-		user.setUserid(value);
-		userid = value;
+	    else if (name.equals("username")){
+		user.setUsername(value);
+		username = value;
 	    }
-	    else if (name.equals("fullName"))  {
+	    else if (name.equals("fullName")){
 		user.setFullName(value);
 	    }
 	    else if (name.equals("role")){
 		user.setRole(value);
 	    }
+	    else if (name.equals("dept")){
+		user.setDept(value);
+	    }	    
 	    else if (name.equals("inactive")){
 		user.setInactive(value);
 	    }	    
@@ -70,7 +73,7 @@ public class MarketbucksUserServ extends TopServlet{
 	//
 	// Set defaults
 	//
-	if(!userid.isEmpty() && action.equals("Add")){
+	if(!username.equals("") && action.equals("Add")){
 	    String back = user.doSave();
 	    if(!back.isEmpty()){
 		message += back;
@@ -95,7 +98,7 @@ public class MarketbucksUserServ extends TopServlet{
 		message += back;
 	    }
 	    else{
-		user = new MarketbucksUser();
+		user = new LegacytimeUser();
 		id = "";
 		message += "Delete Successfully";
 	    }
@@ -113,7 +116,7 @@ public class MarketbucksUserServ extends TopServlet{
 	out.println("<html><head><title>Set User Access </title>");
 	out.println("<script language=javascript>                ");
 	out.println(" function validateAdd(){     ");
-	out.println(" if(document.myForm.newuser.value.length == 0){ ");
+	out.println(" if(document.myForm.username.value.length == 0){ ");
 	out.println("	alert(\"User name not entered \");  ");  
 	out.println("   document.myForm.newuser.focus();    ");
 	out.println("   return false;}                      ");
@@ -131,7 +134,7 @@ public class MarketbucksUserServ extends TopServlet{
 	out.println("<center>");
 	out.println("<font size=+2>Grant/Deny Access </font><br>");
 	out.println("<font size=+1 color=green> "+
-		    "Marketbucks Application </font><br>"); 
+		    "Legacytime Application </font><br>"); 
 	out.println("<br />");
 	if(!message.equals("")){
 	    out.println(message);
@@ -147,7 +150,7 @@ public class MarketbucksUserServ extends TopServlet{
 		    "onchange=\"myForm.submit()\">");
 	TopUserList tl = new TopUserList();
 	tl.setDbParams(appDbInfo);
-	String back = tl.findMarketbucksUsers();
+	String back = tl.findLegacytimeUsers();
 	if(back.isEmpty()){
 	    users = tl.getUsers();
 	}
@@ -161,12 +164,15 @@ public class MarketbucksUserServ extends TopServlet{
 	    }
 	} 
 	out.println("</select></td></tr>");
-	out.println("<tr><td align=right><b>Userid</b>:</td><td>");
-	out.println("<input name=\"userid\" size=\"30\" value=\""+user.getUserid()+"\" ></input>");
+	out.println("<tr><td align=right><b>Username</b>:</td><td>");
+	out.println("<input name=\"username\" size=\"30\" value=\""+user.getUsername()+"\" ></input>");
 	out.println("</td></tr>");
 	out.println("<tr><td align=right><b>Full Name</b>:</td><td>");
 	out.println("<input name=fullName size=30 value=\""+user.getFullName()+"\"></input><br />");
 	out.println("</td></tr>");
+	out.println("<tr><td align=right><b>Dept</b>:</td><td>");
+	out.println("<input name=dept size=30 value=\""+user.getDept()+"\"></input><br />");
+	out.println("</td></tr>");	
 	out.println("<tr><td align=right><b>Role:</b>:</td><td>");
 	for(int jj=0; jj< roles.length;jj++){
 	    String checked = "";
@@ -199,7 +205,7 @@ public class MarketbucksUserServ extends TopServlet{
 			"&nbsp;&nbsp;&nbsp;</td><td>");		
 	    out.println("<input type=\"submit\" value=\"Delete\" name=\"action\" "+
 			"onclick=\"return validateDelete()\" /> ");
-	    out.println("<a href=\""+url+"MarketbucksUser\">New User</a>");
+	    out.println("<a href=\""+url+"LegacytimeUser\">New User</a>");
 	}
 	out.println("</td></tr></table>");
 	out.println("</td></tr></table>");

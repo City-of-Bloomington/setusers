@@ -11,17 +11,16 @@ import users.utils.*;
 public class PromtUser extends TopUser implements Serializable{
 
     static Logger logger = LogManager.getLogger(PromtUser.class);
-    String conUrl="", appStr="", appUser="", appPass="";
 
     public PromtUser(){
 
     }
     public PromtUser(
-			  String str,
-			  String str2,
-			  String str3,
-			  String str4,
-			  String str5){
+		     String str,
+		     String str2,
+		     String str3,
+		     String str4,
+		     String str5){
 	setVals(str, str2, str3, str4, str5);
     }
     void setVals(

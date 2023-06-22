@@ -11,7 +11,6 @@ import users.utils.*;
 public class SponsorsUser extends TopUser implements Serializable{
 
     static Logger logger = LogManager.getLogger(SponsorsUser.class);
-    String conUrl="", appStr="", appUser="", appPass="";
 
     public SponsorsUser(){
 

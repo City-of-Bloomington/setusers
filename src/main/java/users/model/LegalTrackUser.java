@@ -11,7 +11,6 @@ import users.utils.*;
 public class LegalTrackUser extends TopUser implements Serializable{
 
     static Logger logger = LogManager.getLogger(LegalTrackUser.class);
-    String conUrl="", appStr="", appUser="", appPass="";
 
     public LegalTrackUser(){
 

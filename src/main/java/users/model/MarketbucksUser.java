@@ -11,7 +11,6 @@ import users.utils.*;
 public class MarketbucksUser extends TopUser implements Serializable{
 
     static Logger logger = LogManager.getLogger(MarketbucksUser.class);
-    String conUrl="", appStr="", appUser="", appPass="";
 
     public MarketbucksUser(){
 
