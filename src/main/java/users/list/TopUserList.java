@@ -459,6 +459,45 @@ public class TopUserList extends TopUser{
 	    Helper.databaseDisconnect(con, stmt, rs);
 	}
 	return msg;
-    }    
+    }
+    /**
+    public String findForSetUsers(){
+	String msg = "";
+	Connection con = null;
+	PreparedStatement stmt = null;
+	ResultSet rs = null;			
+	String qq = " select * from users order by 2";
+	logger.debug(qq);
+	try {
+	    con = Helper.getConnection();
+	    if(con == null){
+		msg = "Error coold not connect to db ";		
+		logger.error(msg);
+	    }
+	    else{
+		users = new ArrayList<>();
+		stmt = con.prepareStatement(qq);
+		rs = stmt.executeQuery();
+		while(rs.next()){
+		    TopUser one =
+			new User(
+				 rs.getString(1),
+				 rs.getString(2),
+				 rs.getString(3));
+		    if(!users.contains(one))
+			users.add(one);
+		}
+	    }
+	}
+	catch(Exception e){
+	    logger.error(e);
+	    msg += e+";"+qq;
+	}
+	finally{
+	    Helper.databaseDisconnect(con, stmt, rs);
+	}
+	return msg;
+    }
+    */
     
 }

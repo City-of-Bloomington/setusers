@@ -8,9 +8,8 @@ import users.utils.*;
 
 public class User implements Serializable{
 
-    String id="", username = "", fullName="";
     static Logger logger = LogManager.getLogger(User.class);
-
+    String id="", username = "", fullName="";
     public User(){
     }		
     public User(String str){
@@ -18,44 +17,35 @@ public class User implements Serializable{
 	    username = str;
     }
     public User(String str, String str2){
-	if(str != null)
-	    username = str;
-	if(str2 != null)
-	    fullName = str2;
+	setId(str);
+	setUsername(str2);
     }	
     public User(String str, String str2, String str3){
-	if(str != null)
-	    id = str;
-	if(str2 != null)
-	    username = str2;
-	if(str3 != null)
-	    fullName = str3;		
-    }
-    public String getId(){
-	return id;
-    }		
-    public String getUsername(){
-	return username;
-    }
-    public String getFullName(){
-	if(fullName.isEmpty())
-	    return username;
-	return fullName;
+	setId(str);
+	setUsername(str2);
+	setFullName(str3);
     }
     public void setId(String val){
 	if(val != null)
 	    id = val;
-    }
+    }    
     public void setUsername(String val){
 	if(val != null)
-	    username = val;
-    }
+	   username = val;
+    }    
     public void setFullName(String val){
 	if(val != null)
 	    fullName = val;
-    }		
-		
-
+    }
+    public String getId(){
+	return id;
+    }    
+    public String getUsername(){
+	return username;
+    }
+    public String getFullName(){
+	return fullName;
+    }    
     public String toString(){
 		
 	if(!fullName.equals("")) return fullName;
@@ -81,7 +71,6 @@ public class User implements Serializable{
 
     }
 
-	
     public String doSelect(){
 
 	String msg="";
@@ -154,12 +143,16 @@ public class User implements Serializable{
 	    pstmt = con.prepareStatement(qq);
 	    pstmt.setString(1, username);
 	    pstmt.setString(2, fullName);
-	    pstmt.executeUpdate();
+	    int cnt = pstmt.executeUpdate();
 	    //
-	    logger.debug(qq2);
-	    pstmt2 = con.prepareStatement(qq2);
-	    rs = pstmt2.executeQuery();					
-	    id = rs.getString(1);
+	    if(cnt > 0){
+		logger.debug(qq2);
+		pstmt2 = con.prepareStatement(qq2);
+		rs = pstmt2.executeQuery();
+		if(rs.next()){
+		    id = rs.getString(1);
+		}
+	    }
 	}
 	catch(Exception ex){
 	    msg += qq+": "+ex;	    

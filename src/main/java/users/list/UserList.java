@@ -19,42 +19,6 @@ public class UserList{
     public UserList(){
 	
     }
-    public void setDbParams(String str,
-			    String str2,
-			    String str3,
-			    String str4){
-	setConUrl(str);
-	setAppStr(str2);
-	setAppUser(str3);
-	setAppPass(str4);
-    }
-    void setConUrl(String val){
-	if(val != null)
-	    conUrl = val;
-    }
-    void setAppStr(String val){
-	if(val != null)
-	    appStr = val;
-    }
-    void setAppUser(String val){
-	if(val != null)
-	    appUser = val;
-    }
-    void setAppPass(String val){
-	if(val != null)
-	    appPass = val;
-    }
-    public String getAppPass(){
-	return appPass;
-    }
-    public String getMysqlConStr(){
-	if(conUrl.isEmpty() || appStr.isEmpty() || appUser.isEmpty()){
-	    return null;
-	}
-	String  conStr = conUrl+appStr+"?autoReconnect=true&serverTimezone=America/New_York&useSSL=false&user="+appUser+"&password=";
-	return conStr;
-    }    
-    //
     public List<User> getUsers(){
 	return users;
     }
@@ -71,7 +35,7 @@ public class UserList{
 	System.err.println(qq);
 	logger.debug(qq);
 	try{
-	    con = Helper.databaseConnect(getMysqlConStr(), getAppPass());
+	    con = Helper.getConnection();
 	    if(con == null){
 		msg += " could not connect to DB ";
 		logger.error(msg);

@@ -86,7 +86,7 @@ public class Login extends TopServlet{
 
 	User user = null;
 	try{
-	    User user2 = new User(username);
+	    User user2 = new User(null, username);
 	    String back = user2.doSelect();
 	    if(!back.equals("")){
 		logger.error(back);

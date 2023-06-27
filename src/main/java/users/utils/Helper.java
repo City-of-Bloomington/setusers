@@ -67,6 +67,7 @@ public class Helper{
 		    logger.error(str);
 		}
 		else{
+		    pass = true;
 		    c_con++;
 		    logger.debug("Got connection: "+c_con);
 		    logger.debug("Got connection at try "+trials);
