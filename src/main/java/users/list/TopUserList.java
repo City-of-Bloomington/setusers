@@ -32,6 +32,7 @@ public class TopUserList extends TopUser{
 	    else{
 		stmt = con.prepareStatement(qq);
 		rs = stmt.executeQuery();
+		users = new ArrayList<>();
 		while(rs.next()){
 		    TopUser one = new AssetTrackUser(
 				     rs.getString(1),
@@ -41,8 +42,6 @@ public class TopUserList extends TopUser{
 				     rs.getString(5),
 				     rs.getString(6)
 						     );
-		    if(users == null)
-			users = new ArrayList<>();
 		    if(!users.contains(one))
 			users.add(one);
 		}
@@ -73,6 +72,7 @@ public class TopUserList extends TopUser{
 	    else{
 		stmt = con.prepareStatement(qq);
 		rs = stmt.executeQuery();
+		users = new ArrayList<>();
 		while(rs.next()){
 		    TopUser one =
 			new LegalTrackUser(
@@ -80,8 +80,6 @@ public class TopUserList extends TopUser{
 				     rs.getString(2),
 				     rs.getString(3),
 				     rs.getString(4));
-		    if(users == null)
-			users = new ArrayList<>();
 		    if(!users.contains(one))
 			users.add(one);
 		}
@@ -151,6 +149,7 @@ public class TopUserList extends TopUser{
 	    else{
 		stmt = con.prepareStatement(qq);
 		rs = stmt.executeQuery();
+		users = new ArrayList<>();
 		while(rs.next()){
 		    TopUser one =
 			new MarketbucksUser(
@@ -159,8 +158,6 @@ public class TopUserList extends TopUser{
 				     rs.getString(3),
 				     rs.getString(4),
 				     rs.getString(5));
-		    if(users == null)
-			users = new ArrayList<>();
 		    if(!users.contains(one))
 			users.add(one);
 		}
@@ -191,6 +188,7 @@ public class TopUserList extends TopUser{
 	    else{
 		stmt = con.prepareStatement(qq);
 		rs = stmt.executeQuery();
+		users = new ArrayList<>();
 		while(rs.next()){
 		    TopUser one =
 			new PhonesUser(
@@ -201,8 +199,6 @@ public class TopUserList extends TopUser{
 				     rs.getString(5),
 				     rs.getString(6),
 				     rs.getString(7));
-		    if(users == null)
-			users = new ArrayList<>();
 		    if(!users.contains(one))
 			users.add(one);
 		}
@@ -233,6 +229,7 @@ public class TopUserList extends TopUser{
 	    else{
 		stmt = con.prepareStatement(qq);
 		rs = stmt.executeQuery();
+		users = new ArrayList<>();
 		while(rs.next()){
 		    TopUser one =
 			new ProloanUser(
@@ -242,8 +239,6 @@ public class TopUserList extends TopUser{
 				     rs.getString(4),
 				     rs.getString(5),
 				     rs.getString(6));
-		    if(users == null)
-			users = new ArrayList<>();
 		    if(!users.contains(one))
 			users.add(one);
 		}
@@ -274,6 +269,7 @@ public class TopUserList extends TopUser{
 	    else{
 		stmt = con.prepareStatement(qq);
 		rs = stmt.executeQuery();
+		users = new ArrayList<>();
 		while(rs.next()){
 		    TopUser one =
 			new PromtUser(
@@ -282,8 +278,6 @@ public class TopUserList extends TopUser{
 				     rs.getString(3),
 				     rs.getString(4),
 				     rs.getString(5));
-		    if(users == null)
-			users = new ArrayList<>();
 		    if(!users.contains(one))
 			users.add(one);
 		}
@@ -352,6 +346,7 @@ public class TopUserList extends TopUser{
 	    else{
 		stmt = con.prepareStatement(qq);
 		rs = stmt.executeQuery();
+		users = new ArrayList<>();
 		while(rs.next()){
 		    TopUser one =
 			new SponsorsUser(
@@ -361,8 +356,6 @@ public class TopUserList extends TopUser{
 				     rs.getString(4),
 				     rs.getString(5),
 				     rs.getString(6));
-		    if(users == null)
-			users = new ArrayList<>();
 		    if(!users.contains(one))
 			users.add(one);
 		}
@@ -393,6 +386,7 @@ public class TopUserList extends TopUser{
 	    else{
 		stmt = con.prepareStatement(qq);
 		rs = stmt.executeQuery();
+		users = new ArrayList<>();
 		while(rs.next()){
 		    TopUser one =
 			new LegacytimeUser(
@@ -402,8 +396,6 @@ public class TopUserList extends TopUser{
 				     rs.getString(4),
 				     rs.getString(5),
 				     rs.getString(6));
-		    if(users == null)
-			users = new ArrayList<>();
 		    if(!users.contains(one))
 			users.add(one);
 		}
@@ -434,6 +426,7 @@ public class TopUserList extends TopUser{
 	    else{
 		stmt = con.prepareStatement(qq);
 		rs = stmt.executeQuery();
+		users = new ArrayList<>();
 		while(rs.next()){
 		    TopUser one =
 			new WaiverUser(
@@ -444,8 +437,6 @@ public class TopUserList extends TopUser{
 				     rs.getString(5),
 				     rs.getString(6),
 				     rs.getString(7));
-		    if(users == null)
-			users = new ArrayList<>();
 		    if(!users.contains(one))
 			users.add(one);
 		}

@@ -35,9 +35,9 @@ public class SponsorsUser extends TopUser implements Serializable{
 		 ){
 	setUserid(str);
 	setRole(str2);	
-	setFname(str3);
+	setFirst_name(str3);
 	setManager(str4);
-	setLname(str5);
+	setLast_name(str5);
 	setPhone(str6);
     }
     public String toString(){
@@ -79,18 +79,18 @@ public class SponsorsUser extends TopUser implements Serializable{
 		stmt.setNull(2,Types.VARCHAR);
 	    else
 		stmt.setString(2, role);
-	    if(fname.equals(""))
+	    if(first_name.equals(""))
 		stmt.setNull(3,Types.VARCHAR);
 	    else
-		stmt.setString(3, fname);
+		stmt.setString(3, first_name);
 	    if(manager.equals(""))
 		stmt.setNull(4,Types.CHAR);
 	    else
 		stmt.setString(4, "y");
-	    if(lname.equals(""))
+	    if(last_name.equals(""))
 		stmt.setNull(5,Types.VARCHAR);
 	    else
-		stmt.setString(5, lname);
+		stmt.setString(5, last_name);
 	    if(phone.equals(""))
 		stmt.setNull(6,Types.VARCHAR);
 	    else
@@ -117,7 +117,6 @@ public class SponsorsUser extends TopUser implements Serializable{
 	    stmt = con.prepareStatement(qq);
 	    stmt.setString(1, userid);
 	    stmt.executeUpdate();
-	    userid = "";dept="";role="";fullName="";
 	}
 	catch(Exception e){
 	    msg = " Error deleting the user "+e;
@@ -145,18 +144,18 @@ public class SponsorsUser extends TopUser implements Serializable{
 		stmt.setNull(1,Types.VARCHAR);
 	    else
 		stmt.setString(1, role);
-	    if(fname.equals(""))
+	    if(first_name.equals(""))
 		stmt.setNull(2,Types.VARCHAR);
 	    else
-		stmt.setString(2, fname);
+		stmt.setString(2, first_name);
 	    if(manager.equals(""))
 		stmt.setNull(3,Types.CHAR);
 	    else
 		stmt.setString(3, "y");
-	    if(lname.equals(""))
+	    if(last_name.equals(""))
 		stmt.setNull(4,Types.VARCHAR);
 	    else
-		stmt.setString(4, lname);
+		stmt.setString(4, last_name);
 	    if(phone.equals(""))
 		stmt.setNull(5,Types.VARCHAR);
 	    else
