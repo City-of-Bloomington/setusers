@@ -11,7 +11,7 @@ import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 import users.model.*;
 
-@WebServlet(urlPatterns = {"/Login"})
+@WebServlet(urlPatterns = {"/CasLogin"})
 public class Login extends TopServlet{
 
     static Logger logger = LogManager.getLogger(Login.class);
